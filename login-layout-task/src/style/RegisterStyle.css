@@ -1,0 +1,134 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.register-global {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    /* z-index: 1; */
+}
+.register-box {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow:
+        -4px 0 8px rgba(0, 0, 0, 0.2),   /* left */
+        4px 0 8px rgba(0, 0, 0, 0.2),    /* right*/  
+        0 -4px 8px rgba(0, 0, 0, 0.2),  /* top */
+        0 4px 8px rgba(0, 0, 0, 0.2);   /* bottom */
+    z-index: 1;
+}
+.register-box h1 {
+    text-align: center;
+    padding-bottom: 5px;
+}
+.register-box button {
+    border: 2px solid black;
+    padding: 5px;
+    margin-top: 15px;
+    font-size: 1.2em;
+    font-weight: 600;
+    border-radius: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+input {
+    padding: 5px;
+    font-size: 15px; 
+    border-radius: 5px;
+    border-color: black;
+}
+select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid black;
+}
+textarea {
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 3px;
+    font-size: 15px;
+}
+label {
+    font-weight: 500;
+    padding-top: 10px;
+    padding-bottom: 1px;
+}
+.gender-input {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+.gender-input input {
+    margin-right: 4px;
+}
+@media screen and (max-width: 767px) {
+
+    .register-box  {
+        width: 45vw;
+    }
+}
+@media screen and (max-width: 479px) {
+
+    .register-box  {
+        width: 90vw;
+    }
+}
+
+button:disabled {
+    border: 2px solid black;
+    padding: 5px;
+    margin-top: 15px;
+    font-size: 1.2em;
+    font-weight: 600;
+    border-radius: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: black;
+    color: white;
+    cursor: not-allowed;
+}
+
+/* --------------------pop styling--------------------*/
+
+.userDetail-display {
+    z-index: 3;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-box {
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    z-index: 10000;
+    padding: 10px;
+    border-radius: 5px;
+}
+.popup-box h2 {
+    text-align: center;
+    padding: 20px;
+   
+}
+.popup-box h3 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.popup-box h4 {
+    padding-bottom: 5px;
+}
