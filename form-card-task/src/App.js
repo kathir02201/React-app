@@ -3,7 +3,6 @@ import { ScrollBar } from "./taskComponents/ScrollBar";
 
 function App() {
   return (
-    // <PersistentDrawerRight/>
     <ScrollBar/>
   );
 }
