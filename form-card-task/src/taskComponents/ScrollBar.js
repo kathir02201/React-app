@@ -1,25 +1,25 @@
 import { Box } from '@mui/system'
 import { useState, useRef, useEffect} from 'react'
 import {
-    Typography, 
-    TextField, 
-    List, 
-    ListItemButton,
-    ListItemText,
-    Collapse,
-    ListItem,
-    ListItemIcon,
-    Checkbox,
-    Button,
-    IconButton, 
-    LinearProgress,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    Grow,
-    Snackbar,
-    Alert 
+  Typography, 
+  TextField, 
+  List, 
+  ListItemButton,
+  ListItemText,
+  Collapse,
+  ListItem,
+  ListItemIcon,
+  Checkbox,
+  Button,
+  IconButton, 
+  LinearProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Grow,
+  Snackbar,
+  Alert 
 } from '@mui/material';
 
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
@@ -29,134 +29,135 @@ import EditIcon from '@mui/icons-material/Edit';
 
 export const ScrollBar = () => {
 
-    // useState for get Name, Email input
-    const [formData, setFormData] = useState({name: '', email: ''});
+  // useState for get Name, Email input
+  const [formData, setFormData] = useState({name: '', email: ''});
 
-    // useState for name, email validation errors
-    const [errors, setErrors] = useState({name: '', email: '',});
+  // useState for name, email validation errors
+  const [errors, setErrors] = useState({name: '', email: '',});
 
-    // useState for inputFields are touched or not
-    const [touched, setTouched] = useState({ name: false, email: false });
+  // useState for inputFields are touched or not
+  const [touched, setTouched] = useState({ name: false, email: false});
 
-    // for checkbox list
-    const [openArea, setOpenArea] = useState(false);
+  // for checkbox list
+  const [openArea, setOpenArea] = useState(false);
 
+  // for delete saved details 
+  const [deleteIndex, setDeleteIndex] = useState(null);
     
-    // for delete saved details 
-    const [deleteIndex, setDeleteIndex] = useState(null);
-    
-    // contain register details
-    const [finalData, setFinalData] = useState([]);
+  // contain register details
+  const [finalData, setFinalData] = useState([]);
 
-    // contain register details indexes
-    const [visibleIndexes, setVisibleIndexes] = useState([]);
+  // contain register details indexes
+  const [visibleIndexes, setVisibleIndexes] = useState([]);
 
-    // for alert message - for submit data
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
+  // for alert message - for submit data
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-    // for alert message - for delete data
-    const [snackbarDelete, setSnackbarDelete] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
-    const [animatedProgress, setAnimatedProgress] = useState([]);
+  // for alert message - for delete data
+  const [snackbarDelete, setSnackbarDelete] = useState(false);
 
-    const [editIndex, setEditIndex] = useState(null);
+  const [animatedProgress, setAnimatedProgress] = useState([]);
 
-    // for open list item
-    const openList = () => {
-        setOpenArea(!openArea);
-    };
+  const [editIndex, setEditIndex] = useState(null);
 
-    const validateField = (fieldName, value) => {
-        let error = '';
+  // for open list item
+  const openList = () => {
+    setOpenArea(!openArea);
+  };
 
-        if (fieldName === 'name') {
-            if (!value) error = 'Name is required';
-            else if (!/^[A-Za-z\s]+$/.test(value)) error = 'Name must contain only letters';
-            else if (value.length < 3) error = 'Name should be at least 3 characters';
-        }
+  const validateField = (fieldName, value) => {
+    let error = '';
 
-        if (fieldName === 'email') {
-          // console.log(value);
-          
-            if (!value) error = 'Email is required';
-            else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) error = 'Invalid email format';
-        }
-
-        setErrors((prev) => ({ ...prev, [fieldName]: error }));
+    if (fieldName === 'name') {
+      if (!value) error = 'Name is required';
+      else if (!/^[A-Za-z\s]+$/.test(value)) error = 'Name must contain only letters';
+      else if (value.length < 3) error = 'Name should be at least 3 characters';
     }
 
-    // Call from onFocus() event
-    const handleFocus = (e) => {
-        const { name, value} = e.target;
-        // console.log(name, value);
-        
-        // updates touched useState
-        setTouched((prev) => ({ ...prev, [name]: true }));
-        validateField(name, value);
-    };
-
-    // Call from onChange event
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        // console.log(name, value);
-        
-        // updates formData useState
-        setFormData((prev) =>({...prev, [name]:value}))
-        if (touched[name]) {
-          // console.log(touched[name]);
-          validateField(name, value); 
-          // console.log(name, value);
-          
-        }
+    if (fieldName === 'email') {
+    // console.log(value);
+      if (!value) error = 'Email is required';
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) error = 'Invalid email format';
     }
+    setErrors((prev) => ({ ...prev, [fieldName]: error }));
+  }
 
-    const [languages, setLanguages] = useState([
-        { name: 'Tamil', checked: false, rating: ''},
-        { name: 'English', checked: false, rating: ''},
-        { name: 'Hindi', checked: false, rating: ''}
-    ]);
+  // Call from onFocus() event
+  const handleFocus = (e) => {
+    // console.log(e.target);
 
-    // Create refs for each TextField
-    //---------- ------------ -----------
-    const inputRefs = useRef([]);
-    // console.log("inputRefs : ",inputRefs);
+    /* Object destructuring 
+    - extract multiple properties fron an object into seperate variables*/
+    const { name, value} = e.target;  
+    // name - 'name' or 'email'
+    // value = ''
+    // console.log(`name : ${name}\n value : ${value}`);
+
+    // updates touched useState
+    setTouched((prev) => ({ ...prev, [name]: true}));
+      validateField(name, value);
+  };
+
+  // Call from onChange event
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    // console.log(`name : ${name}\n value : ${value}`);
     
-    // Checkbox change handler
-    const handleCheckboxChange = (index) => {
-      // console.log("index : ",index);
-      const updatedLanguages = [...languages];
-      updatedLanguages[index].checked = !updatedLanguages[index].checked;
-      // console.log(updatedLanguages[index].checked = !updatedLanguages[index].checked);
-      setLanguages(updatedLanguages);
+    // updates formData useState
+    setFormData((prev) =>({...prev, [name]:value}))
+    if (touched[name]) {
+      // console.log(touched[name]);
+      validateField(name, value); 
+      // console.log(name, value);
+    }
+  }
+  const [languages, setLanguages] = useState([
+    { name: 'Tamil', checked: false, rating: ''},
+    { name: 'English', checked: false, rating: ''},
+    { name: 'Hindi', checked: false, rating: ''}
+  ]);
 
-      setTimeout(() => {
+  // Create refs for each TextField
+  //---------- ------------ -----------
+  const inputRefs = useRef([]);
+  // console.log("inputRefs : ",inputRefs);
+    
+  // Checkbox change handler
+  const handleCheckboxChange = (index) => {
+    // console.log("index : ",index);
+    const updatedLanguages = [...languages];
+    updatedLanguages[index].checked = !updatedLanguages[index].checked;
+    // console.log(updatedLanguages[index].checked = !updatedLanguages[index].checked);
+    setLanguages(updatedLanguages);
+
+    setTimeout(() => {
       inputRefs.current[index] ?. focus();
       // console.log(inputRefs.current[index].focus()); // undefined
-      // console.log(index); // current index
-      
-      }, 0);
+      // console.log(index); // current index  
+    }, 0);
+  };
 
+  // Rating handler
+  const handleRatingChange = (index, value) => {
+    if (/^\d{0,3}$/.test(value)) {  // allow only 0-3 digit Nums
+      const num = Number(value);
+      // console.log("value : ", value);
+      // console.log("num : ", num);
+    
+      if (/*value === '' ||*/ num >= 0 && num <= 100) {
+        const updated = [...languages];
+        updated[index].rating = value;
+        setLanguages(updated);
+      }
     };
-
-    // Rating handler
-    const handleRatingChange = (index, value) => {
-      if (/^\d{0,3}$/.test(value)) {  // allow only 0-3 digit Nums
-        const num = Number(value);
-        // console.log("value : ", value);
-        // console.log("num : ", num);
-        
-        if (/*value === '' ||*/ num >= 0 && num <= 100) {
-          const updated = [...languages];
-          updated[index].rating = value;
-          setLanguages(updated);
-        }
-      };
-    } 
+  } 
             
   const isFormValid = () => {
     // Check Name
-  if (!formData.name || errors.name) return false; /*console.log("!formData.name: ",!formData.name)*/;
+  if (!formData.name || errors.name) return false; 
+  /*console.log("!formData.name: ",!formData.name)*/;
 
   // Check Email
   if (!formData.email || errors.email) return false;
@@ -177,7 +178,7 @@ export const ScrollBar = () => {
   return true;
     };
 
-    const handleReset = () => {
+  const handleReset = () => {
   // Reset Name & Email
   setFormData({
     name: '',
@@ -205,16 +206,32 @@ export const ScrollBar = () => {
   });
 };
 
+  useEffect(() => {
+    const storedData = localStorage.getItem('finalData');
+    const storedVisibleIndexes = localStorage.getItem('visibleIndexes');
+  if (storedData) {
+    setFinalData(JSON.parse(storedData));
+  }
+  if (storedVisibleIndexes) {
+    setVisibleIndexes(JSON.parse(storedVisibleIndexes));
+  }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('finalData', JSON.stringify(finalData));
+    localStorage.setItem('visibleIndexes', JSON.stringify(visibleIndexes));
+  }, [finalData, visibleIndexes]);
+
   const handleSubmit = (e) => {
   e.preventDefault();
 
   // Filter selected languages with ratings
   const selectedLanguages = languages
-    .filter(lang => lang.checked /*console.log(lang.checked)*/)
-    .map(lang => ({
-      name: lang.name,
-      rating: lang.rating
-    }));
+  .filter(lang => lang.checked /*console.log(lang.checked)*/)
+  .map(lang => ({
+    name: lang.name,
+    rating: lang.rating
+  }));
 
   // Combine Name, Email, and selected languages
   const formDataObject = {
@@ -242,7 +259,7 @@ export const ScrollBar = () => {
 
     // store finalData index
     setVisibleIndexes(prev => [...prev, finalData.length]);
-    // console.log(finalData.length); 
+    console.log(finalData.length); 
     // console.log(visibleIndexes);
     setSnackbarMessage('Form submitted successfully!');
   }
@@ -310,7 +327,7 @@ export const ScrollBar = () => {
           clearInterval(interval);
           return;
         }
-
+        
         current += 5;
 
         setAnimatedProgress(prev => {
@@ -356,15 +373,15 @@ const handleEdit = (index) => {
 
   return (
 
-    // ---------------Global Container-------------------
-    <Box sx={{
-        width: '100vw', 
-        height: '100vh', 
-        display: 'flex', 
-        flexDirection: 'row'
-    }}>
+  // ---------------Global Container-------------------
+  <Box sx={{
+    width: '100vw', 
+    height: '100vh', 
+    display: 'flex', 
+    flexDirection: 'row'
+  }}>
 
-    {/*---------------Data view container---------------*/}
+  {/*---------------Data view container---------------*/}
   <Box sx={{
     width: '65vw',
     height: '100vh',
@@ -408,27 +425,29 @@ const handleEdit = (index) => {
         >
           <EditIcon fontSize='small'/>
         </IconButton>
+
+        {/* -------------- form details ---------------- */}
         <Typography><strong>Name:</strong> {entry.name}</Typography>
         <Typography><strong>Email:</strong> {entry.email}</Typography>
         <Typography><strong>Languages:</strong></Typography>
         {entry.languages.map((lang, i) => (
           <Box key={i} sx={{ my: 1 }}>
-            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{lang.name}</Typography>
-              <LinearProgress
-                variant="determinate"
-                // ------------- ----------------- -------------
-                value={animatedProgress[index]?.[i] ?? 0}
-                sx={{
-                  height: 10,
-                  width: 300,
-                  borderRadius: 5,
-                  mt: 0.5,
-                  backgroundColor: '#e0e0e0',
-                  '& .MuiLinearProgress-bar': {
-                    backgroundColor: getColorForLanguage(lang.name),
-                  }
-                }}
-              /> 
+            <Typography variant="body2" sx={{ fontWeight: 'bold' }}> {lang.name} </Typography>
+            <LinearProgress
+              variant="determinate"
+              // ------------- ----------------- -------------
+              value={animatedProgress[index]?.[i] ?? 0}
+              sx={{
+                height: 10,
+                width: 300,
+                borderRadius: 5,
+                mt: 0.5,
+                backgroundColor: '#e0e0e0',
+                '& .MuiLinearProgress-bar': {
+                  backgroundColor: getColorForLanguage(lang.name),
+                }
+              }}
+            /> 
           </Box>
         ))}
       </Box>
@@ -437,176 +456,177 @@ const handleEdit = (index) => {
   )}
 </Box>
 
-        {/*---------------Form container------------------*/}
-        <Box sx={{
-            width:'35vw',
-            height: '100vh',
-            overflowY: 'scroll',
-            display: 'flex',
-            flexDirection: 'column',
-            flexWrap: 'wrap',
-            gap: 2,
-            bgcolor: '#F2F2F2'
-        }}>
-            <Box 
-                sx={{
-                    display:'flex',
-                    flexDirection: 'column',
-                    padding: '15px',
-                    gap: 2,
-                }}>
-                <Typography variant="h6" sx={{textAlign: 'center'}}>
-                    Register Form
-                </Typography>
+{/*---------------Form container------------------*/}
+<Box sx={{
+  width:'35vw',
+  height: '100vh',
+  overflowY: 'scroll',
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  gap: 2,
+  bgcolor: '#F2F2F2'
+}}>
+  <Box 
+    sx={{
+      display:'flex',
+      flexDirection: 'column',
+      padding: '15px',
+      gap: 2,
+    }
+  }>
+  <Typography variant="h6" sx={{textAlign: 'center'}}>
+    Register Form
+  </Typography>
 
-                {/* -------------Name Input-------------- */}
-                <TextField 
-                    label="Name" 
-                    variant="outlined"
-                    name='name'
-                    value={formData.name}
-                    onFocus={handleFocus}
-                    onChange={handleChange}
-                    error={Boolean(errors.name)}
-                    helperText={errors.name}
-                />
+  {/* -------------Name Input-------------- */}
+  <TextField 
+    label="Name" 
+    variant="outlined"
+    name='name'
+    value={formData.name}
+    onFocus={handleFocus}
+    onChange={handleChange}
+    error={Boolean(errors.name)}
+    helperText={errors.name}
+  />
     
-                {/* -------------Email Input------------- */}
-                <TextField 
-                    label="Email" 
-                    variant="outlined" 
-                    name='email'
-                    value={formData.email}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    error={Boolean(errors.email)}
-                    helperText={errors.email}
-                />
+  {/* -------------Email Input------------- */}
+  <TextField 
+    label="Email" 
+    variant="outlined" 
+    name='email'
+    value={formData.email}
+    onChange={handleChange}
+    onFocus={handleFocus}
+    error={Boolean(errors.email)}
+    helperText={errors.email}
+  />
 
-                {/* --------List for languages check box-------- */}
-                <List sx={{ width: '100%', maxWidth: 450, bgcolor: 'background.paper' }} >
-                    <ListItemButton onClick={openList}>
-                        <ListItemIcon>
-                            <InboxIcon/>
-                        </ListItemIcon>
-                        <ListItemText primary="Select the languages you know" />
-                        {openArea ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
+  {/* --------List for languages check box-------- */}
+  <List sx={{ width: '100%', maxWidth: 450, bgcolor: 'background.paper' }} >
+    <ListItemButton onClick={openList}>
+      <ListItemIcon>
+        <InboxIcon/>
+      </ListItemIcon>
+      <ListItemText primary="Select the languages you know" />
+        {openArea ? <ExpandLess /> : <ExpandMore />}
+    </ListItemButton>
 
-                    <Collapse in={openArea} timeout="auto">
-                      <List>
-                        {languages.map((lang, index) => (
-                          <ListItem key={lang.name}>
-                            <ListItemButton>
-                              <Checkbox
-                                checked={lang.checked}  //false --> true
-                                onChange={() => handleCheckboxChange(index)} 
-                              /> 
-                                <ListItemText 
-                                  primary={lang.name} 
-                                  sx={{textAlign: 'center'}} 
-                                /> 
-                                <TextField 
-                                  size='small' 
-                                  placeholder='Rating' 
-                                  value={lang.rating} // empty string ---> input value
-                                  onChange={(e) => handleRatingChange(index, e.target.value)}
-                                  disabled={!lang.checked}  // true ---> false
-                                  //------------- ------------ ------------
-                                  inputRef={
-                                    (el) => (inputRefs.current[index] = el
-                                    /*console.log(inputRefs.current[index])*/
-                                  )}
-                                  slotProps={{ 
-                                    input: { 
-                                      style: { 
-                                        height: 30,
-                                          width: 75,
-                                          padding: 0
-                                      }
-                                    }
-                                  }}
-                                />
-                              </ListItemButton>
-                            </ListItem>
-                          ))}
-                        </List>
-                    </Collapse>
-                </List>
-            </Box>
+    <Collapse in={openArea}>
+      <List>
+      {languages.map((lang, index) => (
+        <ListItem key={lang.name}>
+          <ListItemButton>
+            <Checkbox
+              checked={lang.checked}  //false --> true
+              onChange={() => handleCheckboxChange(index)} 
+            /> 
+            <ListItemText 
+              primary={lang.name} 
+              sx={{textAlign: 'center'}} 
+            /> 
+            <TextField 
+              size='small' 
+              placeholder='Rating' 
+              value={lang.rating} // empty string ---> input value
+              onChange={(e) => handleRatingChange(index, e.target.value)}
+              disabled={!lang.checked}  // true ---> false
+              //------------- ------------ ------------
+              inputRef={
+                (el) => (inputRefs.current[index] = el
+                /*console.log(inputRefs.current[index])*/
+              )}
+              slotProps={{ 
+                input: { 
+                  style: { 
+                    height: 30,
+                    width: 75,
+                    padding: 0
+                  }
+                }
+              }}
+            />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+  </Collapse>
+  </List>
+</Box>
             
-            {/* ------------Button Container------------- */}
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-around'
-            }}>
+  {/* ------------Button Container------------- */}
+  <Box sx={{
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  }}>
 
-              <Button 
-                variant='contained' 
-                color='primary' 
-                type='submit' 
-                disabled={!isFormValid()}
-                onClick={handleSubmit} 
-              >{editIndex !== null ? 'Update' : 'Submit'}</Button>
+  <Button 
+    variant='contained' 
+    color='primary' 
+    type='submit' 
+    disabled={!isFormValid()}
+    onClick={handleSubmit} 
+  >{editIndex !== null ? 'Update' : 'Submit'}</Button>
 
-              <Button 
-                variant='contained' 
-                color='primary' 
-                type='button' 
-                disabled={!isFormValid()}
-                onClick={handleReset}
-              >Cancel</Button>
-            </Box>
+  <Button 
+    variant='contained' 
+    color='primary' 
+    type='button' 
+    disabled={!isFormValid()}
+    onClick={handleReset}
+  >Cancel</Button>
+  </Box>
 
-        </Box>
+  </Box>
 
-        {/* --------------------Delete PopUp------------------ */}
-        <Dialog
-          open={deleteIndex !== null}
-          onClose={() => setDeleteIndex(null)}
+    {/* --------------------Delete PopUp------------------ */}
+    <Dialog
+      open={deleteIndex !== null}
+      onClose={() => setDeleteIndex(null)}
+    >
+      <DialogTitle>Confirm Deletion</DialogTitle>
+      <DialogContent>
+        <Typography>Are you sure you want to delete this entry?</Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setDeleteIndex(null)} color="primary">
+          Cancel
+        </Button>
+        <Button
+          onClick={() => {
+            handleDelete(deleteIndex);
+            setDeleteIndex(null);
+          }}
+          color="error"
+          variant="contained"
         >
-          <DialogTitle>Confirm Deletion</DialogTitle>
-            <DialogContent>
-              <Typography>Are you sure you want to delete this entry?</Typography>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setDeleteIndex(null)} color="primary">
-                Cancel
-              </Button>
-              <Button
-                onClick={() => {
-                  handleDelete(deleteIndex);
-                  setDeleteIndex(null);
-                }}
-                color="error"
-                variant="contained"
-              >
-                Delete
-              </Button>
-              </DialogActions>
-            </Dialog>
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
         
-      <Snackbar 
-        open={snackbarOpen} 
-        autoHideDuration={3000} 
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-      <Snackbar 
-        open={snackbarDelete} 
-        autoHideDuration={3000} 
-        onClose={handleSnackbarDelete}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert onClose={handleSnackbarDelete} severity="success" sx={{ width: '100%' }}>
-          Details deleted successfully!
-        </Alert>
-      </Snackbar>
-    </Box>
+    <Snackbar 
+      open={snackbarOpen} 
+      autoHideDuration={3000} 
+      onClose={handleSnackbarClose}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+    >
+      <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+        {snackbarMessage}
+      </Alert>
+    </Snackbar>
+    <Snackbar 
+      open={snackbarDelete} 
+      autoHideDuration={3000} 
+      onClose={handleSnackbarDelete}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+    >
+      <Alert onClose={handleSnackbarDelete} severity="success" sx={{ width: '100%' }}>
+        Details deleted successfully!
+      </Alert>
+    </Snackbar>
+  </Box>
   )
 }
